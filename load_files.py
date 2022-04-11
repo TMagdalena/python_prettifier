@@ -16,18 +16,23 @@ def load_files(root_dir:str) -> list:
 def handle_tabs_and_spaces(paths:list) -> list:
     paths = ["C:/Programming/PythonPrettifier/python_prettifier/ugly_file_tabs.py"]
     formatted_file = "ffile_tabs.py"
-    line_group1=[]
-    line_group2=[]
-    line_group3=[]
-    semicolon_index = 0
-    hash_index = 0
+    lines = []
+    counter = 0
     for path in paths:
         with open(path, "r") as file:
             lines = file.readlines()
-            #print(lines)
             for line in lines:
                 line.rstrip()
-                counter = line.replace("\t", "    ")
+                line = line.replace("\t", "    ")
+                for character in line:
+                    if character == " ":
+                        counter += 1
+                    else:
+                        break
+                print(counter)
+                line = line[:counter] + re.sub("\s{2,}"," ", line[counter:])
+                print(line)   #tu ce se odmah pisat u isti fajl nakon sto se implementira fja za copy files
+                counter = 0
     #izbrojati tabove(spaceovi) na pocetku linije
     #replaceati sve vise od 2 spacea REGEX = \s{2,}
     #vratit tabove na pocetku u obliku spaceova(koji su prebrojani)
@@ -69,7 +74,7 @@ def handle_imports(paths:list) -> list:
 def main():
     files = load_files("C:/Programming")
     #handle_imports(files)
-    handle_tabs_and_spaces(files)
+    #handle_tabs_and_spaces(files)
 
 
 if __name__=="__main__":
