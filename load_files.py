@@ -12,6 +12,42 @@ def load_files(root_dir:str) -> list:
 
 #def copy_files(files)
 
+def handle_spaces_between_functions() -> list:
+    paths = ["C:/Programming/PythonPrettifier/python_prettifier/ugly_file_tabs.py"]
+    formatted_file = "ffile_tabs.py"
+    lines = []
+    new_lines = []
+    previous_line = ""
+    flag = False
+    for path in paths:
+        with open(path, "r") as file:
+            lines = file.readlines()
+            for line in lines:
+                match_def = line.find("def")
+                match_class = line.find("class",)
+                #match_empty = not line.strip()
+                #print(match_empty)
+                # print(match)
+                # print(line)
+                # if match_empty == True:
+                #     if not previous_line.strip():
+                #         previous_line = line
+                #         continue
+                if match_def!=-1:
+                    if previous_line.strip():
+                        previous_line = previous_line + "\n"
+                if match_class!=-1:
+                    if previous_line.strip():
+                        previous_line = previous_line + "\n\n"
+                new_lines.append(previous_line)
+                previous_line = line
+            new_lines.append(previous_line)
+        file.close()
+    
+    with open(formatted_file, "w") as ffile:
+        for line in new_lines:
+            ffile.writelines(line)
+
 
 def handle_tabs_and_spaces(paths:list) -> list:
     paths = ["C:/Programming/PythonPrettifier/python_prettifier/ugly_file_tabs.py"]
@@ -75,6 +111,7 @@ def main():
     files = load_files("C:/Programming")
     #handle_imports(files)
     #handle_tabs_and_spaces(files)
+    handle_spaces_between_functions()
 
 
 if __name__=="__main__":
