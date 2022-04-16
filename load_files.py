@@ -1,5 +1,6 @@
 import glob
 import re
+import shutil
 
 
 def load_files(root_dir:str) -> list:
@@ -10,7 +11,16 @@ def load_files(root_dir:str) -> list:
     #print(len(files))
     return files
 
-#def copy_files(files)
+def copy_files(paths:list) -> list:
+    paths = []
+    new_paths = []
+    for path in paths:
+        path[-4] = 2
+        new_path = path
+        shutil.copy(path, new_path)
+        new_paths.append(new_path)
+    return new_paths
+
 
 def handle_whitespaces() -> list:
     
