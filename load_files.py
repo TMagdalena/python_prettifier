@@ -12,6 +12,14 @@ def load_files(root_dir:str) -> list:
 
 #def copy_files(files)
 
+def handle_whitespaces() -> list:
+    
+
+def handle_line_length() -> list:
+    for line in lines:
+        if len(line) > 79:
+            line = line[:80] + "\\n" + line[80:]
+
 def handle_spaces_between_functions() -> list:
     paths = ["C:/Programming/PythonPrettifier/python_prettifier/ugly_file_tabs.py"]
     formatted_file = "ffile_tabs.py"
