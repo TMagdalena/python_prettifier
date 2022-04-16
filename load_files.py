@@ -3,13 +3,10 @@ import glob
 import re
 import shutil
 
-    
-
 
 def load_files(root_dir:str) -> list:
     files = []
     for file in glob.glob(f"{root_dir}/**/*.py",recursive=True):
-        print(file)
         files.append(file)
     return files
 
@@ -54,7 +51,6 @@ def handle_line_length(paths:list) -> list:
             lines = file.readlines()
             for line in lines:
                 if len(line) > 79:
-                    print(line)
                     line1 = line[:80] + "\"" + "\\"
                     new_lines.append(line1)
                     line2 = "\n" + "\"" + line[80:]
@@ -112,9 +108,7 @@ def handle_tabs_and_spaces(paths:list) -> list:
                         counter += 1
                     else:
                         break
-                print(counter)
                 line = line[:counter] + re.sub("\s{2,}"," ", line[counter:])
-                print(line)
                 counter = 0
                 new_lines.append(line)
         file.close()
@@ -148,11 +142,15 @@ def handle_imports(paths:list) -> list:
         file.close()
     return paths
 
-def main():
-    parser = argparse.ArgumentParser(description='Enter folder')
-    parser.add_argument('folder', type=str, help='')
+def parse_input_arguments():
+    parser = argparse.ArgumentParser(description='Enter full path to dir where you want to run formatter:')
+    parser.add_argument('folder', type=str)
     args = parser.parse_args()
+    return args
 
+def main():
+    #D:/gitProjects/blacky/python_prettifier -- example path
+    args = parse_input_arguments()
     files = load_files(args.folder)
     new_files = copy_files(files)
 
@@ -161,6 +159,10 @@ def main():
     new_files = handle_imports(new_files)
     new_files = handle_spaces_between_functions(new_files)
     new_files = handle_line_length(new_files)
+
+    print("Your new formatted files are here:")
+    for file in new_files:
+        print(file)
 
 
 if __name__=="__main__":
