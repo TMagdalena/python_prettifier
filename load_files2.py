@@ -1,10 +1,6 @@
-import argparse
 import glob
 import re
 import shutil
-
-    
-
 
 def load_files(root_dir:str) -> list:
     files = []
@@ -14,6 +10,7 @@ def load_files(root_dir:str) -> list:
     return files
 
 def copy_files(paths:list) -> list:
+    print("tusam")
     new_paths = []
     for path in paths:
         orig_path = path
@@ -39,7 +36,6 @@ def handle_spaces(paths:list) -> list:
                         continue
                 new_lines.append(line)
         file.close()
-    
         with open(path, "w") as file:
             for line in new_lines:
                 file.writelines(line)
@@ -62,6 +58,7 @@ def handle_line_length(paths:list) -> list:
                 else:
                     new_lines.append(line)
             if not lines[-1].strip():
+                print("tusam")
                 new_lines.append("")
         file.close()
         with open(path, "w") as file:
@@ -78,11 +75,17 @@ def handle_spaces_between_functions(paths:list) -> list:
         with open(path, "r") as file:
             lines = file.readlines()
             for line in lines:
+
                 match_def = line.find("def")
+
+
                 match_class = line.find("class",)
+
                 if match_def!=-1:
                     if previous_line.strip():
                         previous_line = previous_line + "\n"
+
+
                 if match_class!=-1:
                     if previous_line.strip():
                         previous_line = previous_line + "\n\n"
@@ -90,7 +93,6 @@ def handle_spaces_between_functions(paths:list) -> list:
                 previous_line = line
             new_lines.append(previous_line)
         file.close()
-    
         with open(path, "w") as file:
             for line in new_lines:
                 file.writelines(line)
@@ -106,7 +108,7 @@ def handle_tabs_and_spaces(paths:list) -> list:
             lines = file.readlines()
             for line in lines:
                 line.rstrip()
-                line = line.replace("\t", "    ")
+                line = line.replace("\t", " ")
                 for character in line:
                     if character == " ":
                         counter += 1
@@ -149,19 +151,12 @@ def handle_imports(paths:list) -> list:
     return paths
 
 def main():
-    parser = argparse.ArgumentParser(description='Enter folder')
-    parser.add_argument('folder', type=str, help='')
-    args = parser.parse_args()
-
-    files = load_files(args.folder)
+    files = load_files("D:/gitProjects/blacky/python_prettifier/")
     new_files = copy_files(files)
-
     new_files = handle_tabs_and_spaces(new_files)
     new_files = handle_spaces(new_files)
     new_files = handle_imports(new_files)
     new_files = handle_spaces_between_functions(new_files)
     new_files = handle_line_length(new_files)
-
-
 if __name__=="__main__":
     main()
